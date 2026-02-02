@@ -21,8 +21,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Set the database URL from settings
-config.set_main_option("sqlalchemy.url", settings.database_url.replace("+asyncpg", ""))
+# Set the database URL from settings (keep asyncpg driver for async migrations)
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 # add your model's MetaData object here
 target_metadata = Base.metadata
