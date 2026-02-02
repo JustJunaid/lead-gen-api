@@ -49,7 +49,7 @@ CMD ["uvicorn", "leadgen.main:app", "--host", "0.0.0.0", "--port", "8000", "--re
 # ============================================
 FROM base as builder
 
-COPY pyproject.toml ./
+COPY pyproject.toml README.md ./
 COPY src/ ./src/
 RUN pip install build && \
     pip wheel --no-cache-dir --wheel-dir /wheels .
