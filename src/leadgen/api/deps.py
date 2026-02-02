@@ -44,20 +44,14 @@ async def verify_api_key(
             headers={"WWW-Authenticate": "ApiKey"},
         )
 
-    # TODO: Implement proper API key verification
-    # For development, accept any non-empty key
-    if settings.is_development and api_key:
+    # TODO: Implement proper API key verification against database
+    # For now, check against hardcoded key
+    if api_key == settings.hardcoded_api_key:
         return {
-            "user_id": "dev-user",
-            "api_key_id": "dev-key",
+            "user_id": "default-user",
+            "api_key_id": "hardcoded-key",
             "scopes": ["read", "write"],
         }
-
-    # In production, verify against database
-    # api_key_hash = hash_api_key(api_key)
-    # db_key = await ApiKeyRepository(db).get_by_hash(api_key_hash)
-    # if not db_key or not db_key.is_active:
-    #     raise HTTPException(...)
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

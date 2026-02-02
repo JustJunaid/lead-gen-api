@@ -77,6 +77,7 @@ class Settings(BaseSettings):
     secret_key: SecretStr = Field(default=SecretStr("change-me-in-production-min-32-chars"))
     api_key_salt: str = Field(default="change-me-salt")
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
+    hardcoded_api_key: str = "leadgen-ak-xK9mP2vL8nQ4wR7tY1jB3hF6dZ5"
 
     # CORS
     cors_origins: list[str] = ["*"]

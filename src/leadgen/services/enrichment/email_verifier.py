@@ -374,19 +374,14 @@ class EmailPermutator:
     """Generate email permutations based on name and domain."""
 
     COMMON_PATTERNS = [
-        "{first}.{last}",      # john.smith@
-        "{first}{last}",       # johnsmith@
+        "{first}.{last}",      # john.smith@  (~50% of companies)
         "{f}{last}",           # jsmith@
-        "{first}_{last}",      # john_smith@
-        "{first}",             # john@
-        "{last}.{first}",      # smith.john@
         "{f}.{last}",          # j.smith@
+        "{first}",             # john@
+        "{first}{last}",       # johnsmith@
+        "{first}_{last}",      # john_smith@
         "{first}{l}",          # johns@
-        "{f}{l}",              # js@
-        "{last}",              # smith@
-        "{last}{first}",       # smithjohn@
-        "{last}{f}",           # smithj@
-        "{last}_{first}",      # smith_john@
+        "{last}.{first}",      # smith.john@
     ]
 
     def __init__(self, known_patterns: dict[str, str] | None = None):
