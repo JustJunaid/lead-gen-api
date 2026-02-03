@@ -1,6 +1,6 @@
 """Email verification endpoint — find and verify emails from lead data."""
 
-import logging
+import sys
 
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, HTTPException, status
@@ -12,8 +12,6 @@ from leadgen.services.enrichment.email_verifier import (
     MailTesterNinjaVerifier,
     VerificationStatus,
 )
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -105,15 +103,15 @@ async def verify_leads(
             )
 
             if not permutations:
-                logger.info("No permutations generated for %s %s @ %s", lead.first_name, lead.last_name, domain)
+                print(f"[VERIFY] No permutations generated for {lead.first_name} {lead.last_name} @ {domain}", flush=True)
                 continue
 
-            logger.info("Verifying %d permutations for %s %s @ %s", len(permutations), lead.first_name, lead.last_name, domain)
+            print(f"[VERIFY] Verifying {len(permutations)} permutations for {lead.first_name} {lead.last_name} @ {domain}", flush=True)
 
             # Verify each permutation, stop at first valid
             for email in permutations:
                 result = await verifier.verify(email)
-                logger.info("  %s -> status=%s, reason=%s", email, result.status, result.reason)
+                print(f"[VERIFY]   {email} -> status={result.status}, reason={result.reason}", flush=True)
 
                 if result.status == VerificationStatus.VALID:
                     verified_leads.append(
