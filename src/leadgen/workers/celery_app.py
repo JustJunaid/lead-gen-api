@@ -14,6 +14,7 @@ celery_app = Celery(
         "leadgen.workers.tasks.enrichment",
         "leadgen.workers.tasks.ai",
         "leadgen.workers.tasks.imports",
+        "leadgen.workers.tasks.verification",
     ],
 )
 
@@ -25,6 +26,7 @@ celery_app.conf.task_queues = [
     Queue("ai.fast", Exchange("ai"), routing_key="ai.fast"),
     Queue("ai.slow", Exchange("ai"), routing_key="ai.slow"),
     Queue("import", Exchange("import"), routing_key="import"),
+    Queue("verification", Exchange("verification"), routing_key="verification"),
     Queue("default", Exchange("default"), routing_key="default"),
 ]
 
@@ -36,6 +38,7 @@ celery_app.conf.task_routes = {
     "leadgen.workers.tasks.ai.generate_cold_email": {"queue": "ai.fast"},
     "leadgen.workers.tasks.ai.generate_bulk_emails": {"queue": "ai.slow"},
     "leadgen.workers.tasks.imports.*": {"queue": "import"},
+    "leadgen.workers.tasks.verification.*": {"queue": "verification"},
 }
 
 # Rate limiting per task
