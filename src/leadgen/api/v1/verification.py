@@ -1,6 +1,6 @@
 """Email verification endpoints — find and verify emails from lead data."""
 
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, Field
 from fastapi import APIRouter, HTTPException, status
@@ -184,12 +184,12 @@ async def verify_leads_batch(
         )
 
     job_repo = JobRepository(db)
-    placeholder_user_id = uuid4()
+    system_user_id = UUID("00000000-0000-0000-0000-000000000001")
 
     leads_data = [lead.model_dump() for lead in request.leads]
 
     job = await job_repo.create(
-        user_id=placeholder_user_id,
+        user_id=system_user_id,
         job_type=JobType.BULK_VERIFY,
         config={
             "mode": "leads",
@@ -286,10 +286,10 @@ async def verify_emails_batch(
         )
 
     job_repo = JobRepository(db)
-    placeholder_user_id = uuid4()
+    system_user_id = UUID("00000000-0000-0000-0000-000000000001")
 
     job = await job_repo.create(
-        user_id=placeholder_user_id,
+        user_id=system_user_id,
         job_type=JobType.BULK_VERIFY,
         config={
             "mode": "emails",
