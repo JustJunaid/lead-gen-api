@@ -48,9 +48,9 @@ class AsyncJob(Base):
     )
 
     # Job Info
-    job_type: Mapped[JobType] = mapped_column(Enum(JobType), nullable=False, index=True)
+    job_type: Mapped[JobType] = mapped_column(Enum(JobType, values_callable=lambda e: [x.value for x in e]), nullable=False, index=True)
     status: Mapped[JobStatus] = mapped_column(
-        Enum(JobStatus),
+        Enum(JobStatus, values_callable=lambda e: [x.value for x in e]),
         default=JobStatus.PENDING,
         index=True,
     )
@@ -111,7 +111,7 @@ class JobTask(Base):
     # Task Info
     task_type: Mapped[str] = mapped_column(String(50), nullable=False)
     status: Mapped[JobStatus] = mapped_column(
-        Enum(JobStatus),
+        Enum(JobStatus, values_callable=lambda e: [x.value for x in e]),
         default=JobStatus.PENDING,
         index=True,
     )
